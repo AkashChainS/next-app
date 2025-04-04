@@ -80,7 +80,7 @@ export default function TableDatas() {
   if (loading) {
     return (
       <div className="p-4 space-y-8">
-        {tableCards.map((card) => (
+        {tableCards.map((card: any) => (
           <div key={card.id}>
             <div className="mb-4">
               <Skeleton className="h-8 w-1/3 mb-2" />

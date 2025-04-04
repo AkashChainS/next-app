@@ -88,7 +88,7 @@ function CardDatas() {
     unitLabel: string
   ) => {
     const percentage = computePercentageChange(value || 0, delta);
-    const trendUp = parseFloat(percentage) >= 0;
+    const trendUp = parseFloat(Number(percentage).toFixed(2)) >= 0;
     const displayVal = value !== null ? (value / unitDivider).toFixed(2) : 'Loading...';
     const lastVal = ((value || 0) - delta) / unitDivider;
     return (
