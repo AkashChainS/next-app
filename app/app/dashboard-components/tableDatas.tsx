@@ -3,6 +3,7 @@ import { fetchCubeData } from '@/lib/cubeApi';
 import hiringTask from '@/public/data/hiring-task.json';
 import { GoGraph } from 'react-icons/go';
 import { FaAngleDown } from "react-icons/fa6";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function TableDatas() {
   const [tableData, setTableData] = useState<Record<string, any[]>>({});
@@ -35,7 +36,7 @@ export default function TableDatas() {
     if (tableCards.length > 0) {
       fetchDataForTables();
     }
-  }, []);
+  }, [tableCards]);
 
   const toggleRowSelection = (cardId: string, rowIndex: number) => {
     setSelectedRows((prev) => {
@@ -75,11 +76,30 @@ export default function TableDatas() {
     });
   };
 
-  if (loading) return <div>Loading table data...</div>;
+  // While loading, show skeleton loaders for each table card
+  if (loading) {
+    return (
+      <div className="p-4 space-y-8">
+        {tableCards.map((card) => (
+          <div key={card.id}>
+            <div className="mb-4">
+              <Skeleton className="h-8 w-1/3 mb-2" />
+              <Skeleton className="h-4 w-1/2" />
+            </div>
+            <div className="overflow-x-auto">
+              <Skeleton className="h-10 w-full mb-1" />
+              <Skeleton className="h-10 w-full mb-1" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 space-y-8">
-      {tableCards.map((card) => {
+      {tableCards.map((card: any) => {
         const rows = getSortedRows(tableData[card.id] || [], card.id);
         if (!rows || rows.length === 0) return null;
 
@@ -114,12 +134,36 @@ export default function TableDatas() {
                     </th>
                   </tr>
                   <tr className="border-b bg-gray-200">
-                    <th className="p-3 border bg-white cursor-pointer" onClick={() => handleSort(card.id, salesKey)}><div className='flex items-center justify-between'>Sales <FaAngleDown className='text-sm'/></div></th>
-                    <th className="p-3 border bg-white cursor-pointer" onClick={() => handleSort(card.id, outOfStockKey)}><div className='flex items-center justify-between'>Out of Stock <FaAngleDown className='text-sm'/></div></th>
-                    <th className="p-3 border bg-white cursor-pointer" onClick={() => handleSort(card.id, inventoryKey)}><div className='flex items-center justify-between'>Total Inventory <FaAngleDown className='text-sm'/></div></th>
-                    <th className="p-3 border bg-white cursor-pointer" onClick={() => handleSort(card.id, rankKey)}><div className='flex items-center justify-between'>Average Rank <FaAngleDown className='text-sm'/></div></th>
-                    <th className="p-3 border bg-white "><div className='flex items-center justify-between'>Est. Traffic <FaAngleDown className='text-sm'/></div></th>
-                    <th className="p-3 border bg-white"><div className='flex items-center justify-between'>Est. Impressions <FaAngleDown className='text-sm'/></div></th>
+                    <th className="p-3 border bg-white cursor-pointer" onClick={() => handleSort(card.id, salesKey)}>
+                      <div className='flex items-center justify-between'>
+                        Sales <FaAngleDown className='text-sm'/>
+                      </div>
+                    </th>
+                    <th className="p-3 border bg-white cursor-pointer" onClick={() => handleSort(card.id, outOfStockKey)}>
+                      <div className='flex items-center justify-between'>
+                        Out of Stock <FaAngleDown className='text-sm'/>
+                      </div>
+                    </th>
+                    <th className="p-3 border bg-white cursor-pointer" onClick={() => handleSort(card.id, inventoryKey)}>
+                      <div className='flex items-center justify-between'>
+                        Total Inventory <FaAngleDown className='text-sm'/>
+                      </div>
+                    </th>
+                    <th className="p-3 border bg-white cursor-pointer" onClick={() => handleSort(card.id, rankKey)}>
+                      <div className='flex items-center justify-between'>
+                        Average Rank <FaAngleDown className='text-sm'/>
+                      </div>
+                    </th>
+                    <th className="p-3 border bg-white">
+                      <div className='flex items-center justify-between'>
+                        Est. Traffic <FaAngleDown className='text-sm'/>
+                      </div>
+                    </th>
+                    <th className="p-3 border bg-white">
+                      <div className='flex items-center justify-between'>
+                        Est. Impressions <FaAngleDown className='text-sm'/>
+                      </div>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -172,3 +216,4 @@ export default function TableDatas() {
     </div>
   );
 }
+

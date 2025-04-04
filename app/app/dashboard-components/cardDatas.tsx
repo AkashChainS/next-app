@@ -5,6 +5,7 @@ import LineChart from '@/components/mine/charts/LineChart';
 import DonutChartWithLegends from '@/components/mine/charts/DonutChartWithLegends';
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import hiringTask from '@/public/data/hiring-task.json';
+import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton loader
 
 function CardDatas() {
   const [salesTotal, setSalesTotal] = useState<number | null>(null);
@@ -111,20 +112,31 @@ function CardDatas() {
       {/* Sales (MRP) */}
       <Card className='w-full'>
         <CardHeader className='border-b border-gray-200 pb-2'>
-          <CardTitle className='flex items-center justify-between text-sm font-semibold'>Sales (MRP) <AiOutlineQuestionCircle className='text-gray-500' /></CardTitle>
+          <CardTitle className='flex items-center justify-between text-sm font-semibold'>
+            Sales (MRP) <AiOutlineQuestionCircle className='text-gray-500' />
+          </CardTitle>
         </CardHeader>
         <CardContent className='flex flex-col gap-2'>
-          {renderTrendHeader(salesTotal, salesDelta, 100000, 'L')}
+          {/* Render Skeleton if salesTotal not loaded */}
+          {salesTotal === null ? (
+            <Skeleton className="h-8 w-full" />
+          ) : (
+            renderTrendHeader(salesTotal, salesDelta, 100000, 'L')
+          )}
           <div style={{ height: '200px' }}>
-            <LineChart
-              data={salesTrend}
-              valueKey="blinkit_insights_sku.sales_mrp_sum"
-              datasetLabel="Sales (MRP)"
-              noDot={true}
-              yAxisFormat={(val: number) => Number(val / 100000).toFixed(1)}
-              xAxisFormat={(label: string) => new Date(label).getDate().toString()}
-              xTickInterval={2}
-            />
+            {salesTrend.length === 0 ? (
+              <Skeleton className="h-full w-full" />
+            ) : (
+              <LineChart
+                data={salesTrend}
+                valueKey="blinkit_insights_sku.sales_mrp_sum"
+                datasetLabel="Sales (MRP)"
+                noDot={true}
+                yAxisFormat={(val: number) => Number(val / 100000).toFixed(1)}
+                xAxisFormat={(label: string) => new Date(label).getDate().toString()}
+                xTickInterval={2}
+              />
+            )}
           </div>
         </CardContent>
       </Card>
@@ -132,20 +144,30 @@ function CardDatas() {
       {/* Total Quantity Sold */}
       <Card className='w-full'>
         <CardHeader className='border-b border-gray-200 pb-2'>
-          <CardTitle className='flex items-center justify-between text-sm font-semibold'>Total Quantity Sold <AiOutlineQuestionCircle className='text-gray-500' /></CardTitle>
+          <CardTitle className='flex items-center justify-between text-sm font-semibold'>
+            Total Quantity Sold <AiOutlineQuestionCircle className='text-gray-500' />
+          </CardTitle>
         </CardHeader>
         <CardContent className='flex flex-col gap-2'>
-          {renderTrendHeader(qtyTotal, qtyDelta, 1000, 'K')}
+          {qtyTotal === null ? (
+            <Skeleton className="h-8 w-full" />
+          ) : (
+            renderTrendHeader(qtyTotal, qtyDelta, 1000, 'K')
+          )}
           <div style={{ height: '200px' }}>
-            <LineChart
-              data={qtyTrend}
-              valueKey="blinkit_insights_sku.qty_sold"
-              datasetLabel="Total Quantity Sold"
-              noDot={true}
-              yAxisFormat={(val: number) => Number(val / 1000).toFixed(1)}
-              xAxisFormat={(label: string) => new Date(label).getDate().toString()}
-              xTickInterval={2}
-            />
+            {qtyTrend.length === 0 ? (
+              <Skeleton className="h-full w-full" />
+            ) : (
+              <LineChart
+                data={qtyTrend}
+                valueKey="blinkit_insights_sku.qty_sold"
+                datasetLabel="Total Quantity Sold"
+                noDot={true}
+                yAxisFormat={(val: number) => Number(val / 1000).toFixed(1)}
+                xAxisFormat={(label: string) => new Date(label).getDate().toString()}
+                xTickInterval={2}
+              />
+            )}
           </div>
         </CardContent>
       </Card>
@@ -153,18 +175,20 @@ function CardDatas() {
       {/* Top Cities Pie Chart */}
       <Card className='w-full'>
         <CardHeader className='border-b border-gray-200 pb-2'>
-          <CardTitle className='flex items-center justify-between text-sm font-semibold'>Top Cities <AiOutlineQuestionCircle className='text-gray-500' /></CardTitle>
+          <CardTitle className='flex items-center justify-between text-sm font-semibold'>
+            Top Cities <AiOutlineQuestionCircle className='text-gray-500' />
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div style={{ height: '300px' }}>
-            {topCities.length > 0 ? (
+            {topCities.length === 0 ? (
+              <Skeleton className="h-full w-full" />
+            ) : (
               <DonutChartWithLegends
                 data={topCities}
                 valueKey="blinkit_insights_city.sales_mrp_sum"
                 nameKey="blinkit_insights_city.name"
               />
-            ) : (
-              "Loading chart..."
             )}
           </div>
         </CardContent>

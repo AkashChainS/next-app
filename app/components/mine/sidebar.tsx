@@ -29,10 +29,10 @@ export default function Sidebar() {
       }`}
     >
       {/* Sidebar Header */}
-      <div className="flex items-center justify-between relative">
+      <div className="flex items-center justify-between">
         {!isCollapsed && (
           <Select defaultValue="Test_band">
-            <SelectTrigger className="w-[155px] flex items-center">
+            <SelectTrigger className="w-[145px] flex items-center">
               <SelectValue placeholder="Select Brand" />
             </SelectTrigger>
             <SelectContent>
@@ -44,7 +44,7 @@ export default function Sidebar() {
                       <span className="w-6 h-6 flex items-center justify-center bg-gray-500 rounded-full text-white">
                         {option[0].toUpperCase()}
                       </span>
-                      {!isCollapsed && option}
+                      {option}
                     </span>
                   </SelectItem>
                 ))}
@@ -53,12 +53,12 @@ export default function Sidebar() {
           </Select>
         )}
 
-        {/* Collapse Button */}
+        {/* Collapse Button (positioned using Flexbox) */}
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="p-2 rounded-md absolute right-0 transition-transform duration-500"
+          className="p-2 rounded-md transition-transform duration-500"
           style={{
-            transform: isCollapsed ? "translateX(-2px)" : "translateX(5px)",
+            transform: isCollapsed ? "translateX(2px)" : "translateX(5px)",
           }}
         >
           {isCollapsed ? (
@@ -72,11 +72,13 @@ export default function Sidebar() {
       {/* Main Menu */}
       <div className="flex flex-col flex-1 justify-start gap-6 mt-8">
         <NavItem icon={<HiOutlineHome />} text="Overview" isCollapsed={isCollapsed} />
-        
+
         {/* Channels Dropdown Item */}
         <div className="flex flex-col gap-1">
           <div
-            className={`flex items-center cursor-pointer gap-2 px-3 ${isCollapsed ? "justify-center" : "justify-between"}`}
+            className={`flex items-center cursor-pointer gap-2 px-3 ${
+              isCollapsed ? "justify-center" : "justify-between"
+            }`}
             onClick={() => setIsChannelOpen(!isChannelOpen)}
           >
             <div className={`flex items-center gap-4 ${isCollapsed ? "justify-center" : ""}`}>
@@ -87,11 +89,11 @@ export default function Sidebar() {
             </div>
             {!isCollapsed && <FaAngleDown size={12} className="text-[#7E8986]" />}
           </div>
-          
+
           {/* Dropdown Items */}
           {!isCollapsed && isChannelOpen && (
             <div className="pl-11 mt-1 text-sm space-y-2 text-[#7E8986]">
-              <div className="cursor-pointer text-sm font-medium  hover:text-black">Meta Ads</div>
+              <div className="cursor-pointer text-sm font-medium hover:text-black">Meta Ads</div>
               <div className="cursor-pointer text-sm font-medium hover:text-black">Google Ads</div>
               <div className="cursor-pointer text-sm font-medium hover:text-black">Quick Commerce</div>
             </div>

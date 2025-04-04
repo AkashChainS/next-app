@@ -24,7 +24,9 @@ interface LineChartProps {
 }
 
 const LineChart: FC<LineChartProps> = ({ data, valueKey, datasetLabel, noDot = false, yAxisFormat, xAxisFormat, xTickInterval }) => {
-  const labels = data.map((item: any) => xAxisFormat ? xAxisFormat(item["blinkit_insights_sku.created_at"]) : item["blinkit_insights_sku.created_at"]);
+  const labels = data.map((item: any) => 
+    xAxisFormat ? xAxisFormat(item["blinkit_insights_sku.created_at"]) : item["blinkit_insights_sku.created_at"]
+  );
 
   const chartData = {
     labels,
@@ -33,8 +35,9 @@ const LineChart: FC<LineChartProps> = ({ data, valueKey, datasetLabel, noDot = f
         label: datasetLabel,
         data: data.map((item: any) => Number(item[valueKey])),
         borderWidth: 2,
-        borderColor: 'rgba(75, 192, 192, 1)',
-        fill: false,
+        borderColor: '#ffcccb',
+        backgroundColor: '#9BD0F5',
+        fill: 'origin', // Explicitly fill from the line to the origin
         pointRadius: noDot ? 0 : 3,
         tension: 0.3,
       }
